@@ -17,6 +17,15 @@ from PIL import Image
 from collections import OrderedDict
 
 def initialize(image_dir, batch_size):
+    """Initializes the training sets
+
+    Parameters:
+    image_dir (string): the base image dir
+    batch_size (int): the training batch size
+
+    Returns:
+    train_loader, valid_loader, test_loader, train_data
+   """
     data_dir = image_dir
     train_dir = data_dir + '/train'
     valid_dir = data_dir + '/valid'

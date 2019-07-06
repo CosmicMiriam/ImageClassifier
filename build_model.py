@@ -3,7 +3,7 @@ from torch import nn, optim
 
 from collections import OrderedDict
 
-def build_model(model_type_input, device, output, dropout_value, learning_rate_value):
+def build_model(model_type_input, device, output, dropout_value, learning_rate_value, hidden_units = 512):
     """Build a model using a pretrained one
 
     Parameters:
@@ -12,6 +12,7 @@ def build_model(model_type_input, device, output, dropout_value, learning_rate_v
     output (int): number of outputs for output layer
     dropout_value (float): dropout used for training
     learning_rate_value (float): learning rate used for training
+    hidden_units (int): number of hidden units
     
     Returns:
     object:the model
@@ -36,13 +37,10 @@ def build_model(model_type_input, device, output, dropout_value, learning_rate_v
 
         model_new.classifier = nn.Sequential(
          nn.Dropout(dropout_value),
-         nn.Linear(9216, 2048),
+         nn.Linear(9216, hidden_units),
          nn.ReLU(),
-         nn.Linear(2048, output),
+         nn.Linear(hidden_units, output),
          nn.LogSoftmax(dim = 1))
-        
-        # Only train the classifier parameters, feature parameters are frozen
-        custom_optimizer = optim.Adam(model_new.classifier.parameters(), learning_rate_value)
     
     ## Initialize vgg16 model
     if (model_type_input == model_type_vgg16):    
@@ -54,15 +52,10 @@ def build_model(model_type_input, device, output, dropout_value, learning_rate_v
 
         model_new.classifier = nn.Sequential(
          nn.Dropout(dropout_value),
-         nn.Linear(25088, 2048),
+         nn.Linear(25088, hidden_units),
          nn.ReLU(),
-         nn.Linear(2048, 512),
-         nn.ReLU(),
-         nn.Linear(512, output),
+         nn.Linear(hidden_units, output),
          nn.LogSoftmax(dim = 1))
-        
-        # Only train the classifier parameters, feature parameters are frozen
-        custom_optimizer = optim.Adam(model_new.classifier.parameters(), learning_rate_value)
     
     ## Initialize densenet model
     if (model_type_input == model_type_densenet121):
@@ -74,14 +67,14 @@ def build_model(model_type_input, device, output, dropout_value, learning_rate_v
     
         model_new.classifier = nn.Sequential(OrderedDict([
               ('dropout', nn.Dropout(dropout_value)),
-              ('fc1', nn.Linear(1024, 500)),
+              ('fc1', nn.Linear(1024, hidden_units)),
               ('relu', nn.ReLU()),
-              ('fc2', nn.Linear(500, output)),
+              ('fc2', nn.Linear(hidden_units, output)),
               ('output', nn.LogSoftmax(dim=1))
               ]))
         
-        # Only train the classifier parameters, feature parameters are frozen
-        custom_optimizer = optim.Adam(model_new.classifier.parameters(), learning_rate_value)
+    # Only train the classifier parameters, feature parameters are frozen
+    custom_optimizer = optim.Adam(model_new.classifier.parameters(), learning_rate_value)
     
     model_new.to(device);
     

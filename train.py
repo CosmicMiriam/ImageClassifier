@@ -5,9 +5,10 @@
 #      python train.py --dir <directory with images> --arch <model>
 #             --checkpoint <file name for saving train data> --learning_rate <learning rate value> 
 #             --epochs <epochs number> --batchsize <batch size> --trainsteps <trainsteps> --gpu <use gpu True/False>
-#             --dropout <train dropout> --categories <categories file name> --savedir <checkpoint dir> 
+#             --dropout <train dropout> --categories <categories file name> --savedir <checkpoint dir>
+#             --hiddenunits <number of hidden units>
 #   Example call:
-#    python train.py --dir flowers --arch densenet121 --checkpoint checkpoint.pth --learning_rate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True
+#    python train.py --dir flowers --arch densenet121 --checkpoint checkpoint.pth --learningrate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True --hiddenunits 512
 ##
 
 # Imports python modules
@@ -41,6 +42,7 @@ def main():
     dropout = in_args.dropout
     train_epochs = in_args.epochs
     train_steps = in_args.trainsteps
+    hidden_units = in_args.hiddenunits
 
     categories = load_categories(in_args.categories)
     output_size = len(categories)
@@ -58,7 +60,7 @@ def main():
     train_loader, valid_loader, test_loader, train_data = initialize(in_args.dir, in_args.batchsize)
     
     # Initialize the model
-    model, criterion, optimizer = build_model(model_type, device, output_size, dropout, learning_rate)
+    model, criterion, optimizer = build_model(model_type, device, output_size, dropout, learning_rate, hidden_units)
     
     # Train the network
     train_network(train_epochs, train_steps, train_loader, test_loader, model, device, optimizer, criterion)
@@ -67,7 +69,7 @@ def main():
     test_network(test_loader, device, model, criterion)
     
     # Save checkpoint
-    save_checkpoint(model, model_type, train_data, train_epochs, optimizer, in_args.checkpoint, in_args.savedir, dropout, learning_rate)
+    save_checkpoint(model, model_type, train_data, train_epochs, optimizer, in_args.checkpoint, in_args.savedir, dropout, learning_rate, hidden_units)
     
     end_time = time()
     

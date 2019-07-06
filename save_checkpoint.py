@@ -1,6 +1,6 @@
 import torch
 
-def save_checkpoint(model, model_type, train_data, epochs, optimizer, filename, savedir, dropout, learning_rate):
+def save_checkpoint(model, model_type, train_data, epochs, optimizer, filename, savedir, dropout, learning_rate, hidden_units):
     """Save checkpoint
 
     Parameters:
@@ -11,8 +11,9 @@ def save_checkpoint(model, model_type, train_data, epochs, optimizer, filename, 
     optimizer (object): the train optimizer
     filename (string): the checkpoint filename
     savedir (string): the checkpoint save dir
-    dropout: (float): dropout used in training
-    learning_rate: (float): learning rate used during training
+    dropout (float): dropout used in training
+    learning_rate (float): learning rate used during training
+    hidden_units (int): the hidden units
    """
     
     filename = savedir + "/" + filename
@@ -27,7 +28,8 @@ def save_checkpoint(model, model_type, train_data, epochs, optimizer, filename, 
               'optimizer.state_dict': optimizer.state_dict,
               'class_to_idx': class_to_idx,
               'dropout': dropout,
-              'learning_rate': learning_rate
+              'learning_rate': learning_rate,
+              'hidden_units': hidden_units
              }
 
     torch.save(checkpoint, filename)

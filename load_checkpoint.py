@@ -19,7 +19,7 @@ def load_checkpoint(filename, savedir, output_size, device):
     
    checkpoint = torch.load(filename)
     
-   model, criterion, optimizer = build_model(checkpoint['model_type'], device, output_size, checkpoint['dropout'], checkpoint['learning_rate'])
+   model, criterion, optimizer = build_model(checkpoint['model_type'], device, output_size, checkpoint['dropout'], checkpoint['learning_rate'], checkpoint['hidden_units'])
     
    model.load_state_dict(checkpoint['state_dict'])
     
