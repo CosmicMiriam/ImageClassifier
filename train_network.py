@@ -7,8 +7,15 @@ def train_network(epochs, steps, train_loader, test_loader, model, device, optim
     Parameters:
     epochs (int): epochs number
     steps  (int): the number of steps
+    train_loader  (list): the train loader images
+    test_loader (list): the test loader images
+    model (object): the trained model
+    device (string): device (cpu or cuda)
+    optimizer (object): training optimizer
+    criterion (object): triing criterion
    """
     
+    print()
     print("Training the network...")
     print()
     

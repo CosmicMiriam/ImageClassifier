@@ -3,7 +3,7 @@ import torch
 
 def test_network(loader, device_test, model, criterion):
     print()
-    print("Testing trained network accuracy")
+    print("Testing trained network accuracy...")
     print()
     
     test_loss = 0

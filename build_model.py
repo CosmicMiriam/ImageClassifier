@@ -7,8 +7,12 @@ def build_model(model_type_input, device, output, dropout_value, learning_rate_v
     """Build a model using a pretrained one
 
     Parameters:
-    model_type_input (string): the model type - alexnet, vgg16 or resnet
-
+    model_type_input (string): the model type - alexnet, vgg16 or densenet121
+    device (string): cpu or cuda
+    output (int): number of outputs for output layer
+    dropout_value (float): dropout used for training
+    learning_rate_value (float): learning rate used for training
+    
     Returns:
     object:the model
     object:the loss criterion

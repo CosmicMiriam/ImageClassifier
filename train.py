@@ -1,16 +1,13 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# */AIPND-revision/intropyproject-classify-pet-images/check_images.py
-#
 # PROGRAMMER: Davide Zordan
 # PURPOSE: Train a model
 #
 # Use following arguments:
 #      python train.py --dir <directory with images> --arch <model>
 #             --checkpoint <file name for saving train data> --learning_rate <learning rate value> 
-#             --epochs <epochs number> --batchsize <batch size> --trainsteps <trainsteps> --gpu
+#             --epochs <epochs number> --batchsize <batch size> --trainsteps <trainsteps> --gpu <use gpu True/False>
+#             --dropout <train dropout> --categories <categories file name> --savedir <checkpoint dir> 
 #   Example call:
-#    python train.py --dir flowers/ --arch densenet121 --checkpoint checkpoint.pth --learning_rate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu
+#    python train.py --dir flowers --arch densenet121 --checkpoint checkpoint.pth --learning_rate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True
 ##
 
 # Imports python modules
@@ -70,7 +67,7 @@ def main():
     test_network(test_loader, device, model, criterion)
     
     # Save checkpoint
-    save_checkpoint(model, model_type, train_data, train_epochs, optimizer, in_args.checkpoint, in_args.savedir)
+    save_checkpoint(model, model_type, train_data, train_epochs, optimizer, in_args.checkpoint, in_args.savedir, dropout, learning_rate)
     
     end_time = time()
     

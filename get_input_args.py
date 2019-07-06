@@ -7,7 +7,7 @@ def get_input_args():
     Retrieves and parses the command line arguments provided by the user when
     they run the program from a terminal window. 
     """
-    #  python train.py --dir <directory with images> --arch <model>
+    #  python train.py --dir <base directory with images> --arch <model>
     #    --checkpoint <file name for saving train data> --learning_rate <learning rate value> 
     #    --epochs <epochs number> --batchsize <batch size> --trainsteps <trainsteps> --gpu True
     #    --dropout <train dropout> --categories <categories file name> --savedir <checkpoint dir> 
