@@ -2,13 +2,15 @@
 # PURPOSE: Train a model
 #
 # Use following arguments:
-#      python train.py --dir <directory with images> --arch <model>
+#      python train.py --dir <directory with images> --arch <model to be chosen between densenet121, alexnet, vgg16>
 #             --checkpoint <file name for saving train data> --learning_rate <learning rate value> 
 #             --epochs <epochs number> --batchsize <batch size> --trainsteps <trainsteps> --gpu <use gpu True/False>
 #             --dropout <train dropout> --categories <categories file name> --savedir <checkpoint dir>
 #             --hiddenunits <number of hidden units>
-#   Example call:
+#   Example calls:
 #    python train.py --dir flowers --arch densenet121 --checkpoint checkpoint.pth --learningrate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True --hiddenunits 512
+#    python train.py --dir flowers --arch alexnet --checkpoint checkpoint.pth --learningrate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True --hiddenunits 512
+#    python train.py --dir flowers --arch vgg16 --checkpoint checkpoint.pth --learningrate 0.001 --epochs 3 --batchsize 64 --trainsteps 3 --gpu True --hiddenunits 512
 ##
 
 # Imports python modules
