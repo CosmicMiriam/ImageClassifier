@@ -20,9 +20,7 @@ The project is broken down into multiple steps:
 * Train the image classifier on your dataset
 * Use the trained classifier to predict image content
 
-We'll lead you through each part which you'll implement in Python.
-
-When you've completed this project, you'll have an application that can be trained on any set of labeled images. Here your network will be learning about flowers and end up as a command line application. But, what you do with your new skills depends on your imagination and effort in building a dataset. For example, imagine an app where you take a picture of a car, it tells you what the make and model is, then looks up information about it. Go build your own dataset and make something new.
+The project can be trained on any set of labeled images. Here your network will be learning about flowers and end up as a command line application. But, what you do with your new skills depends on your imagination and effort in building a dataset. For example, imagine an app where you take a picture of a car, it tells you what the make and model is, then looks up information about it. Go build your own dataset and make something new.
 
 First up is importing the packages you'll need. It's good practice to keep all the imports at the beginning of your code. As you work through this notebook and find you need to import a package, make sure to add the import up here.
 
@@ -154,15 +152,15 @@ show_images(test_loader)
 
 
 
-![png](output_5_1.png)
+![png](assets/output_5_1.png)
 
 
 
-![png](output_5_2.png)
+![png](assets/output_5_2.png)
 
 
 
-![png](output_5_3.png)
+![png](assets/output_5_3.png)
 
 
 ### Label mapping
@@ -368,7 +366,7 @@ train_network(train_epochs, train_steps)
 
 
 
-![png](output_10_3.png)
+![png](assets/output_10_3.png)
 
 
 ## Testing your network
@@ -512,7 +510,7 @@ imshow(process_image(train_dir + "/1/image_06734.jpg"))
 
 
 
-![png](output_18_1.png)
+![png](assets/output_18_1.png)
 
 ## Class Prediction
 
@@ -624,7 +622,7 @@ view_classify(test_dir + "/1/image_06743.jpg", "checkpoint.pth")
 
 
 
-![png](output_24_2.png)
+![png](assets/output_24_2.png)
 
 
 
@@ -639,6 +637,6 @@ view_classify(test_dir + "/16/image_06657.jpg", "checkpoint.pth")
 
 
 
-![png](output_25_2.png)
+![png](assets/output_25_2.png)
 
 
