@@ -639,4 +639,22 @@ view_classify(test_dir + "/16/image_06657.jpg", "checkpoint.pth")
 
 ![png](assets/output_25_2.png)
 
+## Running on a Local Computer
+### Installing Anaconda 
+The easiest way to install python and the appropriate python modules is to install [Anaconda](https://www.anaconda.com/download).
 
+### Installing PyTorch and torchvision
+### Windows 
+With the release of PyTorch v0.4.0, this version of PyTorch supports installation on the Window Operating Systems. To install PyTorch v0.4.0 or higher look to [*Get Started.*](http://pytorch.org/) for installation instructions.  
+The instructions below are for installing versions of PyTorch that are 0.3.1v or older.  
+#### Windows 7 - for Pytorch v0.3.1 or older
+```terminal
+conda install -c peterjc123 pytorch-cpu
+pip install torchvision
+```
+#### Windows 10 - for Pytorch v0.3.1 or older
+With acknowledgement to Giu of the April Cohort for providing the installation commands.
+```terminal
+conda install -c peterjc123 pytorch cuda90
+pip install torchvision
+```
