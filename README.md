@@ -1,7 +1,5 @@
 # Image classifier
-An image classifier built using Python and PyTorch
-
-Davide Zordan - AI Programming with Python Nanodegree
+An image recognizer using Python and PyTorch that can train an image classifier on a dataset, then predict new images using the trained model.
 
 References:
 - Dataset images from: [102 Category Flower Dataset](http://www.robots.ox.ac.uk/~vgg/data/flowers/102/index.html)
@@ -22,10 +20,11 @@ The project is broken down into multiple steps:
 * Train the image classifier on your dataset
 * Use the trained classifier to predict image content
 
-The project can be trained on any set of labeled images. Here your network will be learning about flowers and end up as a command line application. But, what you do with your new skills depends on your imagination and effort in building a dataset. For example, imagine an app where you take a picture of a car, it tells you what the make and model is, then looks up information about it. Go build your own dataset and make something new.
+The project can be trained on any set of labeled images. Here your network will be learning about flowers and end up as a command line application using the scripts train.py and predict.py. 
 
-First up is importing the packages you'll need. It's good practice to keep all the imports at the beginning of your code. As you work through this notebook and find you need to import a package, make sure to add the import up here.
+But, what you do with your new skills depends on your imagination and effort in building a dataset. For example, imagine an app where you take a picture of a car, it tells you what the make and model is, then looks up information about it. Go build your own dataset and make something new.
 
+First step is to import the required packages:
 
 ```python
 # Imports here
@@ -50,14 +49,12 @@ from collections import OrderedDict
 
 ## Load the data
 
-`torchvision` has been used to load the data ([documentation](http://pytorch.org/docs/0.3.0/torchvision/index.html)). The data can be [downloaded here](https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz). The dataset is split into three parts, training, validation, and testing. For the training, transformations are applied such as random scaling, cropping, and flipping. This will help the network generalize leading to better performance. The input data is resized to 224x224 pixels as required by the pre-trained networks.
+`torchvision` has been used to load the data ([documentation](http://pytorch.org/docs/0.3.0/torchvision/index.html)) that can be [downloaded here](https://s3.amazonaws.com/content.udacity-data.com/nd089/flower_data.tar.gz). The dataset is split into three parts, training, validation, and testing. For the training, transformations are applied such as random scaling, cropping, and flipping. This will help the network generalize leading to better performance. The input data is resized to 224x224 pixels as required by the pre-trained networks.
 
 The validation and testing sets are used to measure the model's performance on data it hasn't seen yet. For this the images have been cropped to the appropriate size.
 
 The pre-trained networks were trained on the ImageNet dataset where each color channel was normalized separately. For all three sets I've normalized the means and standard deviations of the images to what the network expects. For the means, it's `[0.485, 0.456, 0.406]` and for the standard deviations `[0.229, 0.224, 0.225]`, calculated from the ImageNet images.  These values will shift each color channel to be centered at 0 and range from -1 to 1.
  
-
-
 ```python
 data_dir = 'flowers'
 train_dir = data_dir + '/train'
@@ -167,8 +164,7 @@ show_images(test_loader)
 
 ### Label mapping
 
-Labels have been loaded from the file `cat_to_name.json`. It's a JSON object which you can read in with the [`json` module](https://docs.python.org/2/library/json.html). This will give you a dictionary mapping the integer encoded categories to the actual names of the flowers.
-
+Labels have been loaded from the file `cat_to_name.json`. It's a JSON object which can be read in with the [`json` module](https://docs.python.org/2/library/json.html). This return a dictionary mapping the integer encoded categories to the actual names of the flowers.
 
 ```python
 import json
@@ -181,7 +177,7 @@ output_size = len(cat_to_name)
 
 # Building and training the classifier
 
-Now that the data is ready, it's time to build and train the classifier. As usual, you should use one of the pretrained models from `torchvision.models` to get the image features. Build and train a new feed-forward classifier using those features.
+Now that the data is ready, it's time to build and train the classifier. It's possible to use one of the pretrained models from `torchvision.models` to get the image features. A new feed-forward classifier can be trained using those features.
 
 The classifier performs the following steps:
 
@@ -373,7 +369,7 @@ train_network(train_epochs, train_steps)
 
 ## Testing your network
 
-It's good practice to test your trained network on test data, images the network has never seen either in training or validation. This will give you a good estimate for the model's performance on completely new images. The following function runs the test images through the network and measures the accuracy, the same way as validation.
+It's good practice to test the trained network on test data, images the network has never seen either in training or validation. This will give a good estimate for the model's performance on completely new images. The following function runs the test images through the network and measures the accuracy, the same way as validation.
 
 
 ```python
@@ -458,7 +454,7 @@ model, criterion, optimizer, class_to_idx = load_checkpoint('checkpoint.pth')
 
 # Inference for classification
 
-Now you'll write a function to use a trained network for inference. That is, you'll pass an image into the network and predict the class of the flower in the image. Write a function called `predict` that takes an image and a model, then returns the top $K$ most likely classes along with the probabilities. It should look like 
+This function uses a trained network for inference. That is, you'll pass an image into the network and predict the class of the flower in the image. The function called `predict` takes an image and a model, then returns the top $K$ most likely classes along with the probabilities.
 
 ```python
 probs, classes = predict(image_path, model)
@@ -468,37 +464,42 @@ print(classes)
 > ['70', '3', '45', '62', '55']
 ```
 
-First you'll need to handle processing the input image such that it can be used in your network. 
+First we need to handle processing the input image such that it can be used in your network. 
 
 ## Image Preprocessing
 
 ```python
-def process_image(image, normalize = True):
+def process_image(image_path, normalize = True):
     ''' Scales, crops, and normalizes a PIL image for a PyTorch model,
         returns an Numpy array
     '''
     
-    size = 256, 256
-    
-    # Process a PIL image for use in a PyTorch model
-    pil_image = Image.open(image)
-    pil_image.thumbnail(size)
+    image = Image.open(image_path)
+    # Resize the images where shortest side is 256 pixels, keeping aspect ratio. 
+    if image.width > image.height: 
+        factor = image.width/image.height
+        image = image.resize(size=(int(round(factor*256,0)),256))
+    else:
+        factor = image.height/image.width
+        image = image.resize(size=(256, int(round(factor*256,0))))
+    # Crop out the center 224x224 portion of the image.
 
-    # The crop method from the Image module takes four coordinates as input.
-    # The right can also be represented as (left+width)
-    # and lower can be represented as (upper+height).
-    (left, upper, right, lower) = (16, 16, 240, 240)
-    pil_image = pil_image.crop((left, upper, right, lower))
-    
-    np_image = np.array(pil_image) / 255
+    image = image.crop(box=((image.width/2)-112, (image.height/2)-112, (image.width/2)+112, (image.height/2)+112))
+
+    # Convert to numpy array
+    np_image = np.array(image)
+    np_image = np_image/255
+    # Normalize image
     if (normalize):
-        np_image = (np_image - mean) / std
-    np_image = np_image.transpose((2, 1, 0))
+        mean = np.array([0.485, 0.456, 0.406])
+        std = np.array([0.229, 0.224, 0.225])
+        np_image = (np_image - mean) / std 
+    # Reorder dimension for PyTorch
+    np_image = np.transpose(np_image, (2, 0, 1))
+
+    tensor_image = torch.from_numpy(np_image).type(torch.FloatTensor)
     
-    # transform numpy to torch sensor
-    np_image = torch.from_numpy(np_image).float()
-    
-    return np_image
+    return tensor_image
 
 # Test correct visualisation
 imshow(process_image(train_dir + "/1/image_06734.jpg"))
@@ -516,9 +517,9 @@ imshow(process_image(train_dir + "/1/image_06734.jpg"))
 
 ## Class Prediction
 
-Once you can get images in the correct format, it's time to write a function for making predictions with your model. A common practice is to predict the top 5 or so (usually called top-$K$) most probable classes.
+Once images are in the correct format, it's possible to make predictions with the model. A common practice is to predict the top 5 or so (usually called top-$K$) most probable classes.
 
-Again, this method should take a path to an image and a model checkpoint, then return the probabilities and classes.
+This method takes a path to an image and a model checkpoint, then return the probabilities and classes.
 
 ```python
 probs, classes = predict(image_path, model)
@@ -575,8 +576,6 @@ print(classes)
 
 
 ## Sanity Checking
-
-Now that you can use a trained model for predictions, check to make sure it makes sense. Even if the testing accuracy is high, it's always good to check that there aren't obvious bugs.
 
 ```python
 # Display an image along with the top 5 classes
