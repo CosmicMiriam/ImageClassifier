@@ -45,6 +45,8 @@ import numpy as np
 
 from PIL import Image
 from collections import OrderedDict
+
+import json
 ```
 
 ## Load the data
@@ -167,8 +169,6 @@ show_images(test_loader)
 Labels have been loaded from the file `cat_to_name.json`. It's a JSON object which can be read in with the [`json` module](https://docs.python.org/2/library/json.html). This return a dictionary mapping the integer encoded categories to the actual names of the flowers.
 
 ```python
-import json
-
 with open('cat_to_name.json', 'r') as f:
     cat_to_name = json.load(f)
 
